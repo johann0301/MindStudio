@@ -1,0 +1,206 @@
+/* ----BASE ---- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    scroll-behavior: smooth;
+}
+
+/* ----- HEADER -----*/
+header {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid #1e293b;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    position: relative;
+}
+
+.logo {
+    color: #00ffca;
+    font-weight: 600;
+    font-size: 1.4rem;
+    align-items: center;
+    position:absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1100;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #e2e8f0;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #00ffca;
+}
+
+/* ----- HERO ------ */
+.hero {
+    height: 100vh;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 80px;
+}
+
+.hero-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #94a3b8;
+}
+
+.btn {
+    background-color: #00ffca;
+    color: #0f172a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #00caa7;
+}
+
+/* ------ JOGOS ------- */
+.games-section {
+    max-width: 1200px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.games-section h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin: 70px auto;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-left: 10px;
+}
+
+.game-card {
+    background-color: #1e293b;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00ffca55;
+}
+
+.game-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.play-btn {
+    display: inline-block;
+    background-color: #00ffca;
+    color: #0f172a;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.play-btn:hover {
+    background-color: #00caa7;
+}
+
+/* ------- SOBRE ------- */
+.sobre {
+    max-width: 900px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.sobre p {
+    margin-top: 1rem;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+/* ------- CONTATO ------- */
+.contatos {
+    text-align: center;
+    padding: 80px 1rem;
+}
+
+.contatos a {
+    color: #00ffca;
+    text-decoration: none;
+}
+
+.contatos a:hover {
+    text-decoration: underline;
+}
+
+/* ------ FOOTER ------ */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #1e293b;
+    color: #94a3b8;
+    margin-top: 2rem;
+}
+
+/* ----- RESPONSIVIDADE ------ */
+@media (max-width: 768px) {
+    .hero-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        background-color: #0f172a;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 200px;
+        display: none;
+    }
+}
