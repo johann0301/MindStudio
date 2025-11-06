@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mindStudioProject</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <!-- CABEÇALHO -->
@@ -37,11 +37,12 @@
         <h2>Nossos jogos Disponíveis.</h2>
         <div class="games-grid">
             <div class="game-foto">
-                <img src="img/-----" alt="Jogo 1">
-                <h3>Ping-Pong</h3>
-                <p>Venha viver essa experiência única.</p>
-                <a href="#game" class="play-button">Jogar</a>
+                <img src="img/chimp.png" alt="Chimp Test">
+                <h3>Chimp Test</h3>
+                <p>Desafie sua memória como um verdadeiro chimpanzé!</p>
+                <a href="/chimp-test" class="play-button">Jogar</a>
             </div>
+
 
             <div class="game-foto">
                 <img src="img/-----" alt="Jogo 2">
