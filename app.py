@@ -12,6 +12,9 @@ def pagina_inicial():
 @app.route('/chimp-test')
 def chimp_test():
     return render_template('chimp_test.html')
+@app.route('/typing')
+def typing_test():
+    return render_template('typing.html')
 
 # 3. Bloco para rodar o servidor quando você executa "python app.py"
 if __name__ == '__main__':
