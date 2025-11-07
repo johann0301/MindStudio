@@ -15,6 +15,9 @@ def chimp_test():
 @app.route('/typing')
 def typing_test():
     return render_template('typing.html')
+@app.route('/aim-trainer')
+def aim_trainer():
+    return render_template('aim_trainer.html')
 
 # 3. Bloco para rodar o servidor quando você executa "python app.py"
 if __name__ == '__main__':
