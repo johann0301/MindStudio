@@ -18,6 +18,9 @@ def typing_test():
 @app.route('/aim-trainer')
 def aim_trainer():
     return render_template('aim_trainer.html')
+@app.route('/number-memory')
+def number_memory():
+    return render_template('number_memory.html')
 
 # 3. Bloco para rodar o servidor quando você executa "python app.py"
 if __name__ == '__main__':
