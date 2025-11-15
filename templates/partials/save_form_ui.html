@@ -1,0 +1,47 @@
+<style>
+/* --- CSS PARA O FORMULÁRIO DE PONTUAÇÃO --- */
+#saveScoreForm {
+    display: none; /* Começa escondido */
+    margin-top: 20px;
+    background-color: #0f172a; /* Cor de fundo um pouco mais escura */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #1e293b;
+}
+#saveScoreForm input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #94a3b8;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+#saveScoreForm input:focus {
+    outline: none;
+    border-color: #00ffca;
+}
+#saveBtn {
+    background-color: #00ffca;
+    color: #0f172a;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#saveBtn:hover { background-color: #00caa7; }
+#saveStatus {
+    margin-top: 10px;
+    color: #00ffca;
+}
+/* --- FIM DO CSS --- */
+</style>
+
+<!-- HTML do Formulário para Salvar Pontos -->
+<div id="saveScoreForm">
+    <input type="text" id="playerName" placeholder="Digite seu nome">
+    <button id="saveBtn">Salvar Pontuação</button>
+    <p id="saveStatus"></p>
+</div>

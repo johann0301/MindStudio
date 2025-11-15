@@ -13,7 +13,7 @@ def pagina_inicial():
 def chimp_test():
     return render_template('chimp_test.html')
 @app.route('/typing')
-def typing_test():
+def typing():
     return render_template('typing.html')
 @app.route('/aim-trainer')
 def aim_trainer():

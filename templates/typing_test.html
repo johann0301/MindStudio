@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teste de Digitação | Mind Studio</title>
+<title>Typing | Mind Studio</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <style>
     body {
@@ -137,9 +137,17 @@
         <p>Status: <span id="statusDisplay">Aguardando</span></p>
     </div>
 
+    {% include "partials/save_form_ui.html" %}
+
     <a href="/">Voltar ao início</a>
 </div>
 
-<script src="{{ url_for('static', filename='js/typing.js') }}"></script>
+<script src="{{ url_for('static', filename='js/typing_test.js') }}"></script>
+
+<!-- 2. Script do NOVO Gerenciador de Pontuação -->
+<script src="{{ url_for('static', filename='js/score_manager.js') }}"></script>
+
+<!-- 3. Script de inicialização do Firebase -->
+{% include "partials/firebase_init.html" %}
 </body>
 </html>
