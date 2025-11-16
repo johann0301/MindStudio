@@ -111,7 +111,7 @@ header {
 
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-left: 10px;
 }
@@ -151,31 +151,31 @@ header {
 }
 
 /* ------- SOBRE ------- */
-.sobre {
+.sobres {
     max-width: 900px;
     margin: 100px auto;
     text-align: center;
     padding: 0 1rem;
 }
 
-.sobre p {
+.sobres p {
     margin-top: 1rem;
     color: #94a3b8;
     line-height: 1.6;
 }
 
 /* ------- CONTATO ------- */
-.contatos {
+.contato {
     text-align: center;
     padding: 80px 1rem;
 }
 
-.contatos a {
+.contato a {
     color: #00ffca;
     text-decoration: none;
 }
 
-.contatos a:hover {
+.contato a:hover {
     text-decoration: underline;
 }
 
@@ -203,4 +203,87 @@ footer {
         width: 200px;
         display: none;
     }
+}
+
+/* Estilo para os ícones dos jogos na página principal */
+.games-grid .game-foto i {
+    font-size: 4rem;      /* Tamanho do ícone (ex: 64px) */
+    color: #00ffca;      /* Cor principal do seu site */
+    margin-bottom: 20px;  /* Espaço abaixo do ícone */
+}
+
+/* Ajustes de Estilo para os Cards Clicáveis */
+.game-foto {
+    padding: 25px;
+
+    /* Resetar o estilo de link */
+    text-decoration: none;  /* Remove o sublinhado */
+    color: inherit;         /* Faz o texto herdar a cor do CSS (no seu caso, #e2e8f0) */
+    display: block;         /* Garante que o <a> se comporte como um bloco */
+
+    /* Adiciona uma transição suave para o efeito de hover */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Adiciona um efeito de "hover" para mostrar que é clicável */
+.game-foto:hover {
+    transform: scale(1.03); /* Dá um leve "zoom" no card */
+    box-shadow: 0 8px 30px rgba(0, 255, 202, 0.4); /* Realça a sombra neon */
+    /* O cursor: pointer; já é automático por ser um link */
+}
+
+/* Remove o estilo do botão "play" antigo, se ainda o tiver */
+.play-button {
+    display: none; 
+}
+
+/* Estilização para as seções 'Sobre' e 'Contato' */
+
+/* Aplica o estilo de "card" para as duas seções */
+.sobres,
+.contato {
+    max-width: 800px; /* Largura similar ao leaderboard */
+    margin: 100px auto; /* Espaçamento entre seções e centraliza */
+    background-color: #1e293b; /* Fundo do card (o mesmo do seu site) */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 255, 202, 0.3);
+    text-align: left; /* Alinha o texto à esquerda dentro do card */
+}
+
+/* Estiliza os títulos (h2) das seções */
+.sobres h2,
+.contato h2 {
+    color: #00ffca; /* Cor neon */
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #334155; /* Uma linha sutil abaixo do título */
+    padding-bottom: 10px;
+}
+
+/* Estiliza os parágrafos (p) */
+.sobres p,
+.contato p {
+    font-size: 1.1rem;
+    line-height: 1.7; /* Melhora a legibilidade */
+    color: #e2e8f0; /* Cor do texto padrão */
+    margin-bottom: 15px;
+}
+
+/* Estiliza os links (email e GitHub) */
+.contato p a {
+    color: #00ffca; /* Cor neon */
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.contato p a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Estiliza o "Desenvolvido por:" */
+.sobres p strong {
+    color: #00ffca; /* Cor neon */
 }

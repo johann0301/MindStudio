@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Placar de Líderes | Mind Studio</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        font-family: 'Poppins', sans-serif;
+        text-align: center;
+        padding-top: 60px;
+    }
+    .leaderboard-container {
+        max-width: 800px;
+        margin: auto;
+        background-color: #1e293b;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 255, 202, 0.3);
+    }
+    h1 {
+        color: #00ffca;
+        margin-bottom: 20px;
+    }
+    
+    /* Botões de filtro */
+    .filter-buttons {
+        margin-bottom: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    .filter-btn {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        border: 2px solid #00ffca;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .filter-btn:hover {
+        background-color: #00ffca;
+        color: #0f172a;
+    }
+    .filter-btn.active { /* Estilo do botão ativo */
+        background-color: #00ffca;
+        color: #0f172a;
+    }
+
+    /* Tabela de placar */
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        background-color: #0f172a;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #1e293b;
+    }
+    th {
+        background-color: #334155;
+        color: #00ffca;
+    }
+    tr:nth-child(even) {
+        background-color: #1a2433; /* Cor ligeiramente diferente */
+    }
+    td:first-child { /* Rank */
+        width: 60px;
+        font-weight: bold;
+        color: #00ffca;
+        text-align: center;
+    }
+
+    /* Link para voltar */
+    a {
+        display: inline-block;
+        margin-top: 25px;
+        color: #00ffca;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    a:hover { color: #0ff; }
+</style>
+</head>
+<body>
+<div class="leaderboard-container">
+    <h1>🏆 Placar de Líderes</h1>
+    
+    <div class="filter-buttons">
+        <button class="filter-btn" data-jogo="typing_test">Typing Test</button>
+        <button class="filter-btn" data-jogo="number_memory">Number Memory</button>
+        <button class="filter-btn" data-jogo="chimp_test">Chimp Test</button>
+        <button class="filter-btn" data-jogo="aim_trainer">Aim Trainer</button>
+        <button class="filter-btn" data-jogo="reaction_time">Reaction Time</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Nome</th>
+                <th>Pontuação</th>
+                <th>Jogo</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+            <tr>
+                <td colspan="4">Carregando...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/#jogos">Voltar ao início</a>
+</div>
+
+<script src="{{ url_for('static', filename='js/leaderboard.js') }}"></script>
+</body>
+</html>

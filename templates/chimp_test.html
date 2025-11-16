@@ -11,7 +11,7 @@
         color: #e2e8f0;
         font-family: 'Poppins', sans-serif;
         text-align: center;
-        padding-top: 100px;
+        padding-top: 35px;
     }
 
     .chimp-container {
@@ -124,7 +124,9 @@
         <p>Recorde: <span id="highscore">0</span></p>
     </div>
 
-    <a href="/">Voltar ao início</a>
+    {% include "partials/save_form_ui.html" %}
+
+    <a href="/#jogos">Voltar ao início</a>
 </div>
 
 <script src="{{ url_for('static', filename='js/chimp_test.js') }}"></script>

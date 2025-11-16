@@ -1,6 +1,6 @@
 const sentenceDisplay = document.getElementById('sentenceDisplay');
 const inputArea = document.getElementById('inputArea');
-const restartBtn = document.getElementById('restartBtn');
+const restartBtn = document.getElementById('restartBtn'); // Este é o botão
 const wpmDisplay = document.getElementById('wpmDisplay');
 const accuracyDisplay = document.getElementById('accuracyDisplay');
 const statusDisplay = document.getElementById('statusDisplay');
@@ -8,15 +8,19 @@ const saveScoreForm = document.getElementById('saveScoreForm');
 const playerNameInput = document.getElementById('playerName');
 const saveBtn = document.getElementById('saveBtn');
 const saveStatus = document.getElementById('saveStatus');
+const leaderboardBtn = document.getElementById('leaderboardBtn');
 
-// Frases de BACKUP caso a API falhe
 const sentences = [
     "O rato roeu a roupa do rei de Roma.",
     "A raposa marrom rápida salta sobre o cachorro preguiçoso.",
     "O pão de queijo é uma iguaria típica de Minas Gerais.",
     "Python é uma linguagem de programação poderosa e fácil de aprender.",
     "Flask é um micro-framework web escrito em Python.",
-    "Estamos fazendo um ótimo trabalho neste projeto da faculdade."
+    "Estamos fazendo um ótimo trabalho neste projeto da faculdade.",
+    "JavaScript é uma linguagem essencial para o desenvolvimento web moderno.",
+    "HTML e CSS são a base de toda página na internet.",
+    "O banco de dados SQLite é leve e muito fácil de configurar.",
+    "Mais vale um pássaro na mão do que dois voando."
 ];
 
 // --- 2. Variáveis do Jogo ---
@@ -25,102 +29,65 @@ let startTime = null;
 let errors = 0;
 let typedChars = 0;
 let gameInProgress = false;
-let finalWPM = 0;
+let finalWPM = 0; 
 let finalAccuracy = 0;
+
+const totalRounds = 3;
+let currentRound = 0;
+let wpmScores = [];
+let finalAverageWPM = 0; 
+
+// --- Variáveis de Repetição ---
+let phrasesForThisGame = [];
+
+// --- Função para embaralhar a lista de frases ---
+function shuffleSentences() {
+    // Copia o array original e o embaralha
+    phrasesForThisGame = [...sentences].sort(() => Math.random() - 0.5);
+}
 
 // --- 3. Funções do Jogo ---
 
-/**
- * Esta função PEGA uma nova frase (da API ou do backup)
- * Esta é a função que (re)inicia o jogo.
- */
-async function getNextSentence() {
-    // Mostra o loading
-    statusDisplay.textContent = "Gerando nova frase...";
+function getNextSentence() {
+    statusDisplay.textContent = `Gerando frase ${currentRound + 1}/${totalRounds}...`;
     inputArea.disabled = true;
-    restartBtn.disabled = true;
+    restartBtn.disabled = true; // Desabilita o botão durante as rodadas
     
-    // CORRETO: Esconde o formulário ao (re)iniciar
     saveScoreForm.style.display = 'none';
     saveStatus.textContent = '';
+    leaderboardBtn.style.display = 'none';
     
-    try {
-        // --- Chamada para a API do Gemini ---
-        const systemPrompt = "Você é um gerador de frases para um teste de digitação. Sua única função é gerar uma única frase interessante, com pontuação correta, mas sem aspas no início ou no fim. A frase deve ter entre 10 e 20 palavras.";
-        const userQuery = "Gerar uma nova frase para o teste de digitação.";
-        
-        const apiKey = ""; // Deixe em branco, o Canvas vai fornecer
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+    // Pega a frase da lista embaralhada
+    const fraseLocal = phrasesForThisGame[currentRound];
 
-        const payload = {
-            contents: [{ parts: [{ text: userQuery }] }],
-            systemInstruction: {
-                parts: [{ text: systemPrompt }]
-            },
-        };
-
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro na API: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        
-        if (result.candidates && result.candidates[0].content?.parts?.[0]?.text) {
-            const generatedText = result.candidates[0].content.parts[0].text;
-            const cleanText = generatedText.trim().replace(/^"|"$/g, ''); 
-            loadNewSentence(cleanText); // Carrega a frase da IA
-        } else {
-            throw new Error("Resposta da API inválida.");
-        }
-        
-    } catch (error) {
-        // --- Fallback (Plano B) ---
-        console.error("Falha ao buscar frase da IA:", error);
-        statusDisplay.textContent = "API falhou. Usando frase local.";
-        
-        const randomIndex = Math.floor(Math.random() * sentences.length);
-        loadNewSentence(sentences[randomIndex]);
-    }
+    loadNewSentence(fraseLocal);
 }
 
-
-/**
- * Esta função CARREGA a frase na tela e prepara o jogo.
- * Ela é chamada por getNextSentence()
- */
 function loadNewSentence(sentenceToShow) {
     currentSentence = sentenceToShow;
 
-    // Limpa a tela
     sentenceDisplay.innerHTML = "";
     inputArea.value = "";
     
-    // Converte a frase em spans (letras individuais)
     currentSentence.split('').forEach(char => {
         const span = document.createElement('span');
         span.textContent = char;
         sentenceDisplay.appendChild(span);
     });
 
-    // Marca a primeira letra como "atual"
     if (sentenceDisplay.childNodes.length > 0) {
         sentenceDisplay.childNodes[0].classList.add('current-char');
     }
 
-    // Reseta as estatísticas
     resetStats();
-    statusDisplay.textContent = "Pronto para começar!";
-    inputArea.focus(); // Foca na caixa de texto
-    restartBtn.disabled = false; // Reabilita o botão
+    statusDisplay.textContent = `Pronto para a Frase ${currentRound + 1}/${totalRounds}`;
+    inputArea.focus(); 
+    // (REMOVIDO) A linha 'restartBtn.disabled = false;' foi removida daqui.
+    
+    saveBtn.disabled = false;
 }
 
-// Reseta as estatísticas
+// Reseta estatísticas (para cada rodada)
 function resetStats() {
     startTime = null;
     errors = 0;
@@ -131,9 +98,7 @@ function resetStats() {
     inputArea.disabled = false;
 }
 
-// Função chamada a cada tecla digitada
 function checkTyping() {
-    // Inicia o timer na primeira tecla
     if (!gameInProgress) {
         startTime = new Date();
         gameInProgress = true;
@@ -143,17 +108,12 @@ function checkTyping() {
     const inputChars = inputArea.value.split('');
     const sentenceChars = sentenceDisplay.querySelectorAll('span');
     
-    // Total de caracteres digitados
     typedChars = inputChars.length;
     let currentErrors = 0;
 
-    // Compara o input com a frase
     sentenceChars.forEach((span, index) => {
-        // Limpa classes anteriores
         span.classList.remove('correct', 'incorrect', 'current-char');
-
         if (index < inputChars.length) {
-            // Se o usuário já digitou esta letra
             if (span.textContent === inputChars[index]) {
                 span.classList.add('correct');
             } else {
@@ -161,92 +121,119 @@ function checkTyping() {
                 currentErrors++;
             }
         } else if (index === inputChars.length) {
-            // Esta é a próxima letra a ser digitada
             span.classList.add('current-char');
         }
     });
 
-    // Atualiza estatísticas em tempo real
     errors = currentErrors;
     updateHUD();
 
-    // Verifica se o jogo terminou (digitou tudo)
     if (typedChars === currentSentence.length) {
-        finishGame();
+        finishRound(); 
     }
 }
 
-// Atualiza o painel de estatísticas
 function updateHUD() {
     if (!gameInProgress || typedChars === 0) return;
 
-    // Calcula Precisão
     const accuracy = ((typedChars - errors) / typedChars) * 100;
-    accuracyDisplay.textContent = accuracy.toFixed(0); // Arredonda
+    accuracyDisplay.textContent = accuracy.toFixed(0);
 
-    // Calcula WPM (Palavras por Minuto)
     const currentTime = new Date();
     const elapsedTimeInMinutes = (currentTime - startTime) / 1000 / 60;
-    // Um "WPM" é padronizado como (caracteres digitados / 5) / tempo
     const wpm = (typedChars / 5) / elapsedTimeInMinutes;
-    wpmDisplay.textContent = wpm.toFixed(0); // Arredonda
+    wpmDisplay.textContent = wpm.toFixed(0);
 }
 
-// Termina o jogo
-function finishGame() {
+function finishRound() {
     gameInProgress = false;
-    inputArea.disabled = true; // Trava a digitação
+    inputArea.disabled = true; 
     
-    // Atualiza as estatísticas finais
     updateHUD();
 
-    // CORRETO: Salva os valores finais e mostra o formulário
     finalWPM = parseInt(wpmDisplay.textContent) || 0;
-    finalAccuracy = parseInt(accuracyDisplay.textContent) || 0;
-    statusDisplay.textContent = `Completo! WPM: ${finalWPM}`;
-    
-    saveScoreForm.style.display = 'block';
-    playerNameInput.focus();
-}
+    wpmScores.push(finalWPM);
+    currentRound++;
 
-// --- 4. A função "async function saveScore(e)" FOI REMOVIDA DAQUI ---
-// Ela agora vive em 'score_manager.js'
+    if (currentRound < totalRounds) {
+        statusDisplay.textContent = `Frase ${currentRound}/${totalRounds} completa. Próxima...`;
+        setTimeout(getNextSentence, 1500); 
+    } else {
+        const sum = wpmScores.reduce((a, b) => a + b, 0);
+        finalAverageWPM = (sum / totalRounds).toFixed(0);
+
+        statusDisplay.textContent = `Média Final: ${finalAverageWPM} WPM`;
+        saveScoreForm.style.display = 'block';
+        playerNameInput.focus();
+
+        // Reabilita o botão de jogar e muda o texto
+        restartBtn.style.display = 'inline-block';
+        restartBtn.textContent = "Jogar Novamente";
+
+        currentRound = 0;
+        wpmScores = [];
+    }
+}
 
 
 // --- 5. Adicionar Event Listeners ---
-
-// Ouve o input do usuário
 inputArea.addEventListener('input', checkTyping);
 
-// Ouve o clique no botão de reiniciar (agora chama a função da API)
-restartBtn.addEventListener('click', getNextSentence);
+// Event listener do botão de Iniciar/Reiniciar
+restartBtn.addEventListener('click', () => {
+    restartBtn.style.display = 'none'; // Esconde ao clicar
+    currentRound = 0; 
+    wpmScores = [];
+    shuffleSentences(); 
+    getNextSentence();
+});
 
-// CORRETO: Novo listener para o botão de salvar
+// Listener do botão SALVAR (este já está correto)
 saveBtn.addEventListener('click', async () => {
-    const playerName = playerNameInput.value;
-    
-    // CORRETO: A pontuação é um objeto com score E accuracy
-    const scoreData = {
-        score: finalWPM,
-        accuracy: finalAccuracy
-    };
-    const gameName = "typing_test"; // CORRETO: Nome do jogo
+    const playerName = playerNameInput.value.trim();
+    const gameName = "typing_test";
+    const scoreToSave = finalAverageWPM;
+
+    if (playerName === "") {
+        saveStatus.textContent = "Por favor, digite seu nome.";
+        return;
+    }
 
     saveBtn.disabled = true;
     saveStatus.textContent = "Salvando...";
-    
-    // Chamar a função global do score_manager.js
-    const result = await window.gameScoreManager.saveScore(playerName, scoreData, gameName);
 
-    // Atualizar a UI com a resposta
-    saveStatus.textContent = result.message;
-    saveBtn.disabled = false;
+    try {
+        const response = await fetch('/api/salvar-pontuacao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nome: playerName,
+                jogo: gameName,
+                pontuacao: scoreToSave
+            }),
+        });
 
-    if (result.success) {
-        saveScoreForm.style.display = 'none'; // Esconde o form se salvar
+        const result = await response.json();
+
+        if (result.sucesso) {
+            saveStatus.textContent = "Pontuação salva!";
+            saveBtn.disabled = false; // Reabilita
+            leaderboardBtn.style.display = 'inline-block';
+        } else {
+            saveStatus.textContent = `Erro ao salvar: ${result.erro}`;
+            saveBtn.disabled = false; // Reabilita
+        }
+    } catch (error) {
+        console.error("Erro de rede ao salvar pontuação:", error);
+        saveStatus.textContent = "Erro de conexão. Servidor está offline?";
+        saveBtn.disabled = false; // Reabilita
     }
 });
 
 // --- 6. Iniciar o Jogo ---
-// Carrega a primeira frase quando a página abre (usando a API)
+currentRound = 0; 
+wpmScores = [];
+shuffleSentences(); 
 getNextSentence();
+restartBtn.style.display = 'none'; // Esconde o botão
+restartBtn.textContent = "Jogar Novamente"; // Prepara o texto

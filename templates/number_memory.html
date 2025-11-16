@@ -130,7 +130,9 @@
         <p id="statusDisplay"></p> <!-- Para mensagens de erro/acerto -->
     </div>
 
-    <a href="/">Voltar ao início</a>
+    {% include "partials/save_form_ui.html" %}
+
+    <a href="/#jogos">Voltar ao início</a>
 </div>
 
 <script src="{{ url_for('static', filename='js/number_memory.js') }}"></script>

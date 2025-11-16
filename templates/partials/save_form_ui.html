@@ -36,7 +36,25 @@
     margin-top: 10px;
     color: #00ffca;
 }
-/* --- FIM DO CSS --- */
+
+/* Estilo para o botão de leaderboard */
+.btn-leaderboard {
+    display: inline-block; /* Para o 'a' se comportar como botão */
+    margin-top: 10px;
+    background-color: transparent;
+    color: #00ffca;
+    border: 2px solid #00ffca; /* Borda da cor do site */
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none; /* Remove sublinhado de link */
+}
+.btn-leaderboard:hover {
+    background-color: #00ffca;
+    color: #0f172a;
+}
 </style>
 
 <!-- HTML do Formulário para Salvar Pontos -->
@@ -44,4 +62,8 @@
     <input type="text" id="playerName" placeholder="Digite seu nome">
     <button id="saveBtn">Salvar Pontuação</button>
     <p id="saveStatus"></p>
+
+    <a href="/leaderboard#jogos" id="leaderboardBtn" class="btn-leaderboard" style="display: none;">
+        Ver Leaderboard
+    </a>
 </div>

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mindStudioProject</title>
+    <title>Mind Studio Games</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <!-- CABEÇALHO -->
@@ -16,6 +17,7 @@
                 <ul class="nav-links">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#jogos">Jogos</a></li>
+                    <li><a href="/leaderboard">Leaderboard</a></li>
                     <li><a href="#sobre">Sobre</a></li>
                     <li><a href="#contatos">Contatos</a></li>
                 </ul>
@@ -36,58 +38,59 @@
     <section id="jogos" class="games-section">
         <h2>Nossos jogos Disponíveis.</h2>
         <div class="games-grid">
-            <div class="game-foto">
-                <img src="img/chimp.png" alt="Chimp Test">
+            <a href="/chimp-test" class="game-foto">
+                <i class="fa-solid fa-grip"></i>
                 <h3>Chimp Test</h3>
                 <p>Desafie sua memória como um verdadeiro chimpanzé!</p>
-                <a href="/chimp-test" class="play-button">Jogar</a>
-            </div>
-            <div class="game-foto">
-                <img src="img/typing.jpg" alt="Typing">
-                <h3>Typing</h3>
+            </a>
+            <a href="/typing-test" class="game-foto">
+                <i class="fa-solid fa-keyboard"></i>
+                <h3>Typing Test</h3>
                 <p>Veja o quão rápido você consegue digitar!</p>
-                <a href="/typing" class="play-button">Jogar</a>
-            </div>
-            <div class="game-foto">
-                <img src="img/aim-trainer.jpg" alt="Aim Trainer">
-                <h3>Aim Trainer 🎯</h3>
+            </a>
+            <a href="/aim-trainer" class="game-foto">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Aim Trainer</h3>
                 <p>Teste sua mira e reflexos — acerte o máximo de alvos no menor tempo!</p>
-                <a href="/aim-trainer" class="play-button">Jogar</a>
-            </div>
-            <div class="game-foto">
-                <img src="img/number_memory.jpg" alt="Number Memory Test">
+            </a>
+            <a href="/number-memory" class="game-foto">
+                <i class="fa-solid fa-brain"></i>
                 <h3>Number Memory</h3>
                 <p>Até que nível sua memória de curto prazo consegue chegar?</p>
-                <a href="/number-memory" class="play-button">Jogar</a>
-            </div>
-
-            <div class="game-foto">
-                <img src="img/-----" alt="Jogo 4">
-                <h3>Piratas</h3>
-                <p>Venha viver essa experiência única.</p>
-                <a href="#game" class="play-button">Jogar</a>
-            </div>
+            </a>
+            <a href="/reaction-time" class="game-foto">
+                <i class="fa-solid fa-bolt-lightning"></i>
+                <h3>Reaction Time</h3>
+                <p>Veja o quão rápido você consegue reagir!</p>
+            </a>
         </div>
     </section>
 
     <!-- SOBRE -->
     <section id="sobre" class="sobres">
-        <h2>Sobre nosso site</h2>
+        <h2>Sobre o Projeto</h2>
         <p>
-            Nosso site foi desenvolvido para trazer uma experiência única ao usuário, proporcionando a melhor experiência em games.
+            O Mind Studio Games nasceu como um projeto acadêmico da disciplina de Projeto de Extensão do curso de Ciência da Computação.
+            Nosso objetivo foi criar um conjunto de "benchmarks" mentais, inspirada em clássicos como o Human Benchmark, para testar e desafiar nossas habilidades.
         </p>
-        <p>Desenvolvido por: Pierre, Renan, Johann, Kewy, Rodolfo.</p>
+        <p>
+            Construído com Python, Flask e SQLite no backend, e HTML, CSS e JavaScript puro no frontend, este site é o resultado do nosso esforço em aprender e aplicar conceitos de desenvolvimento web.
+        </p>
+        <p><strong>Desenvolvido por:</strong> Pierre, Renan, Johann, Kewy e Rodolfo.</p>
     </section>
 
     <!-- CONTATOS -->
     <section id="contatos" class="contato">
-        <h2>Contato</h2>
-        <p>Envie-nos um E-mail <a href="mailto:coringadelas@gmail.com">coringadelas@gmail.com</a></p>
+        <h2>Contato & Código Fonte</h2>
+        <p>Encontrou um bug ou tem alguma sugestão? Adoraríamos ouvir!</p>
+        <p>Envie um e-mail para nossa equipe em <a href="pierresimoncc@gmail.com">pierresimoncc@gmail.com</a></p>
+        
+        <p>Você também pode conferir o <a href="https://github.com/johann0301/MindStudio" target="_blank" rel="noopener noreferrer">código fonte no GitHub</a>.</p>
     </section>
 
     <!-- RODAPÉ -->
     <footer>
-        <p>© 2025 mindStudioProject — Todos os direitos reservados.</p>
+        <p>© 2025 mindStudioGames — Todos os direitos reservados.</p>
     </footer>
 </body>
 </html>

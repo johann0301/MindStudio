@@ -6,12 +6,20 @@ const startBtn = document.getElementById('startBtn');
 const submitBtn = document.getElementById('submitBtn');
 const levelDisplay = document.getElementById('levelDisplay');
 const statusDisplay = document.getElementById('statusDisplay');
+const leaderboardBtn = document.getElementById('leaderboardBtn');
+
+// --- Seletores do Formulário de Salvar ---
+const saveScoreForm = document.getElementById('saveScoreForm');
+const playerNameInput = document.getElementById('playerName');
+const saveBtn = document.getElementById('saveBtn');
+const saveStatus = document.getElementById('saveStatus');
 
 // --- 2. Variáveis do Jogo ---
 let level = 1;
 let currentNumber = "";
 let gameState = "start"; // Estados: start, showing, input, gameover
 let showTime = 1500; // 1.5 segundos para mostrar o primeiro número
+let finalLevel = 0; // Guarda a pontuação final
 
 // --- 3. Funções do Jogo ---
 
@@ -33,6 +41,12 @@ function setGameState(state) {
         submitBtn.style.display = "none"; // Esconde botão de enviar
         inputArea.style.display = "none"; // Esconde área de input
         numberDisplay.style.color = "#e2e8f0"; // Garante cor normal
+        
+        // Esconde o form de salvar se estiver no estado inicial
+        if (state === "start") {
+             saveScoreForm.style.display = "none";
+        }
+        
     } else if (state === "showing") {
         startBtn.style.display = "none";
         submitBtn.style.display = "none";
@@ -76,6 +90,10 @@ function nextLevel() {
 // Inicia o jogo
 function startGame() {
     level = 1;
+    saveScoreForm.style.display = "none"; // Esconde o form ao reiniciar
+    saveStatus.textContent = ""; // Limpa o status de salvamento
+    saveBtn.disabled = false;
+    leaderboardBtn.style.display = 'none';
     nextLevel();
 }
 
@@ -100,11 +118,23 @@ function checkAnswer() {
 
 // Fim de jogo
 function gameOver() {
-    setGameState("gameover");
+    finalLevel = level;
+    
+    setGameState("gameover"); 
     statusDisplay.textContent = "Errado! Fim de jogo.";
     statusDisplay.style.color = "#ff0033";
-    numberDisplay.textContent = `Nível: ${level}`;
-    startBtn.textContent = "Tentar Novamente";
+    
+    // Ajusta o display para o texto de "Game Over"
+    // Agora o 'finalLevel' terá o valor correto (ex: 5)
+    numberDisplay.textContent = `Você alcançou o Nível ${finalLevel}!`; 
+    numberDisplay.style.fontSize = "2rem"; 
+    numberDisplay.style.lineHeight = "1.2"; 
+
+    // Reinicializa o botão de início
+    startBtn.textContent = "Tentar Novamente"; 
+    
+    saveScoreForm.style.display = "block"; // Mostra o formulário
+    playerNameInput.focus(); // Foca no campo de nome
 }
 
 
@@ -114,10 +144,56 @@ submitBtn.addEventListener('click', checkAnswer);
 
 // Permite que o usuário pressione "Enter" para enviar
 numberInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && gameState === "input") {
         checkAnswer();
     }
 });
+
+// (NOVO) --- Listener do botão SALVAR --
+saveBtn.addEventListener('click', async () => {
+    const playerName = playerNameInput.value.trim();
+    
+    const gameName = "number_memory";
+    const scoreToSave = finalLevel;
+
+    // Validação
+    if (playerName === "") {
+        saveStatus.textContent = "Por favor, digite seu nome.";
+        return;
+    }
+
+    saveBtn.disabled = true;
+    saveStatus.textContent = "Salvando...";
+
+    try {
+        const response = await fetch('/api/salvar-pontuacao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nome: playerName,
+                jogo: gameName,
+                pontuacao: scoreToSave
+            }),
+        });
+
+        const result = await response.json();
+
+        if (result.sucesso) {
+            saveStatus.textContent = "Pontuação salva!";
+            saveBtn.disabled = false;
+            leaderboardBtn.style.display = 'inline-block';
+        } else {
+            saveStatus.textContent = `Erro ao salvar: ${result.erro}`;
+            saveBtn.disabled = false;
+        }
+
+    } catch (error) {
+        console.error("Erro de rede ao salvar pontuação:", error);
+        saveStatus.textContent = "Erro de conexão. Servidor está offline?";
+        saveBtn.disabled = false;
+    }
+});
+
 
 // --- 5. Iniciar o Jogo ---
 // Define o estado inicial da UI
