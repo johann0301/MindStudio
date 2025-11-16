@@ -51,7 +51,6 @@ function shuffleSentences() {
 function getNextSentence() {
     statusDisplay.textContent = `Gerando frase ${currentRound + 1}/${totalRounds}...`;
     inputArea.disabled = true;
-    restartBtn.disabled = true; // Desabilita o botão durante as rodadas
     
     saveScoreForm.style.display = 'none';
     saveStatus.textContent = '';

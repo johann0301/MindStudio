@@ -14,6 +14,7 @@ let gameState = "start"; // Estados: start, waiting, react, result
 let timerId = null;
 let startTime = 0;
 let finalReactionTime = 0; // Guarda a pontuação final (a média)
+let screenIsLocked = false;
 
 // (NOVO) --- Variáveis para Média ---
 const totalAttempts = 5; // Vamos fazer a média de 5 tentativas
@@ -66,53 +67,58 @@ function showGreen() {
 }
 
 function handleClick() {
+    
+    // 1. Bloqueio: Se a tela estiver travada, não faça nada.
+    if (screenIsLocked === true) {
+        return;
+    }
+    
+    // 2. Se o jogo está parado (start, result, error)...
     if (gameState === "start" || gameState === "result" || gameState === "error") {
-        // Primeiro, checa se o formulário está visível. Se sim, para tudo.
+        
+        // Se o clique foi para "Jogar de Novo", ele esconde
+        // o formulário que estava visível.
         if (saveScoreForm.style.display === 'block') {
-            return;
+            saveScoreForm.style.display = 'none';
+            leaderboardBtn.style.display = 'none';
         }
 
-        // (LÓGICA DA MÉDIA)
-        // Se o formulário não está visível, checa se as 5 tentativas acabaram.
+        // Continua para iniciar o jogo (seja 'start' ou 'waiting')
         if (currentAttempt >= totalAttempts) {
-            // Se já completou as 5, recomeça do zero
             setGameState("start"); 
         } else {
-            // Se não, vai para a próxima tentativa
             setGameState("waiting");
         }
     } 
+    
+    // 3. Se o jogo estava esperando (clique adiantado)
     else if (gameState === "waiting") {
-        // Clicou cedo demais!
         clearTimeout(timerId);
         setGameState("error");
     } 
+    
+    // 4. Se o jogo estava verde (clique certo)
     else if (gameState === "react") {
-        // Clicou no verde! (Sucesso)
         const reactionTime = Date.now() - startTime;
-        reactionTimes.push(reactionTime); // Guarda o tempo
+        reactionTimes.push(reactionTime);
         currentAttempt++;
         
-        setGameState("result"); // Vai para o estado de resultado
+        setGameState("result"); 
 
         if (currentAttempt < totalAttempts) {
-            // Ainda não terminou as 5 tentativas
             reactionText.innerHTML = `${reactionTime} ms<br><small>Clique para a tentativa ${currentAttempt + 1}/${totalAttempts}</small>`;
         } else {
             // Terminou as 5 tentativas!
-            // 1. Calcula a média
             const sum = reactionTimes.reduce((a, b) => a + b, 0);
             const average = sum / totalAttempts;
-            finalReactionTime = average.toFixed(0); // Arredonda e salva
+            finalReactionTime = average.toFixed(0); 
 
-            // 2. Mostra o resultado final
             reactionText.innerHTML = `Média Final: ${finalReactionTime} ms<br><small>Clique para tentar de novo</small>`;
             
-            // 3. Mostra o formulário de salvar
             saveScoreForm.style.display = "block";
             playerNameInput.focus();
+            screenIsLocked = true;
 
-            // 4. Reseta para o próximo jogo
             currentAttempt = 0;
             reactionTimes = [];
         }
@@ -126,8 +132,6 @@ reactionBox.addEventListener('mousedown', handleClick);
 saveBtn.addEventListener('click', async () => {
     const playerName = playerNameInput.value.trim();
     const gameName = "reaction_time";
-    
-    // Agora 'scoreToSave' será a média!
     const scoreToSave = finalReactionTime; 
 
     if (playerName === "") {
@@ -141,9 +145,7 @@ saveBtn.addEventListener('click', async () => {
     try {
         const response = await fetch('/api/salvar-pontuacao', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 nome: playerName,
                 jogo: gameName,
@@ -155,17 +157,20 @@ saveBtn.addEventListener('click', async () => {
 
         if (result.sucesso) {
             saveStatus.textContent = "Pontuação salva!";
-            saveBtn.disabled = false; // (NOVO) Reabilita o botão
+            saveBtn.disabled = false; 
             leaderboardBtn.style.display = 'inline-block';
+            screenIsLocked = false; // <-- DESTRAVA A TELA AQUI
         } else {
             saveStatus.textContent = `Erro ao salvar: ${result.erro}`;
             saveBtn.disabled = false;
+            // Se falhar, a tela continua travada para proteger o placar
         }
 
     } catch (error) {
         console.error("Erro de rede ao salvar pontuação:", error);
         saveStatus.textContent = "Erro de conexão. Servidor está offline?";
         saveBtn.disabled = false;
+        // Se falhar, a tela continua travada
     }
 });
 
