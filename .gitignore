@@ -9,5 +9,4 @@ __pycache__/
 .env
 
 # Arquivo do banco de dados local
-pontuacoes.db
-*.db
+#removendo o que não estava deixando subir o banco de dados
