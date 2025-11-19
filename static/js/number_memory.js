@@ -181,6 +181,7 @@ saveBtn.addEventListener('click', async () => {
         if (result.sucesso) {
             saveStatus.textContent = "Pontuação salva!";
             saveBtn.disabled = false;
+            leaderboardBtn.href = `/leaderboard?game=${gameName}#jogos`;
             leaderboardBtn.style.display = 'inline-block';
         } else {
             saveStatus.textContent = `Erro ao salvar: ${result.erro}`;

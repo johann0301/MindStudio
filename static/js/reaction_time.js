@@ -157,7 +157,8 @@ saveBtn.addEventListener('click', async () => {
 
         if (result.sucesso) {
             saveStatus.textContent = "Pontuação salva!";
-            saveBtn.disabled = false; 
+            saveBtn.disabled = false;
+            leaderboardBtn.href = `/leaderboard?game=${gameName}#jogos`; 
             leaderboardBtn.style.display = 'inline-block';
             screenIsLocked = false; // <-- DESTRAVA A TELA AQUI
         } else {

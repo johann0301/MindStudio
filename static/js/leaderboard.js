@@ -28,8 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (data.sucesso) {
                 todasAsPontuacoes = data.pontuacoes;
-                mostrarPlacar("typing_test"); 
-                filterButtons[0].classList.add('active');
+
+                // --- Lógica para detectar o jogo na URL ---
+                // Tenta ler o parâmetro '?game=...' da URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const jogoNaUrl = urlParams.get('game');
+
+                // Se tiver um jogo na URL, usa ele. Se não, usa 'typing_test' como padrão.
+                const jogoInicial = jogoNaUrl || "typing_test";
+
+                mostrarPlacar(jogoInicial);
+
+                // Atualiza os botões para marcar o correto como 'active'
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Procura o botão que tem o data-jogo igual ao jogoInicial
+                const botaoAtivo = document.querySelector(`.filter-btn[data-jogo="${jogoInicial}"]`);
+                if (botaoAtivo) {
+                    botaoAtivo.classList.add('active');
+                }
+
             } else {
                 leaderboardBody.innerHTML = `<tr><td colspan="4">Erro ao carregar: ${data.erro}</td></tr>`;
             }
