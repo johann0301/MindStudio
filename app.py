@@ -1,11 +1,16 @@
+import os
 import sqlite3  # Importa a biblioteca do SQLite
 from flask import Flask, render_template, request, jsonify  # Importa 'request' e 'jsonify'
 
 # 1. Cria a "aplicação" Flask
 app = Flask(__name__)
 
-# --- Configuração do Banco de Dados ---
-DATABASE_FILE = 'pontuacoes.db'
+# --- Configuração do Banco de Dados (CAMINHO ABSOLUTO) ---
+# Pega o diretório onde este arquivo 'app.py' está salvo
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Junta o diretório com o nome do arquivo do banco
+DATABASE_FILE = os.path.join(BASE_DIR, 'pontuacoes.db')
 
 def inicializar_banco():
     """
