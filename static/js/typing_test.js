@@ -1,6 +1,6 @@
 const sentenceDisplay = document.getElementById('sentenceDisplay');
 const inputArea = document.getElementById('inputArea');
-const restartBtn = document.getElementById('restartBtn'); // Este é o botão
+const restartBtn = document.getElementById('restartBtn');
 const wpmDisplay = document.getElementById('wpmDisplay');
 const accuracyDisplay = document.getElementById('accuracyDisplay');
 const statusDisplay = document.getElementById('statusDisplay');
@@ -81,7 +81,6 @@ function loadNewSentence(sentenceToShow) {
     resetStats();
     statusDisplay.textContent = `Pronto para a Frase ${currentRound + 1}/${totalRounds}`;
     inputArea.focus(); 
-    // (REMOVIDO) A linha 'restartBtn.disabled = false;' foi removida daqui.
     
     saveBtn.disabled = false;
 }
@@ -180,14 +179,14 @@ inputArea.addEventListener('input', checkTyping);
 
 // Event listener do botão de Iniciar/Reiniciar
 restartBtn.addEventListener('click', () => {
-    restartBtn.style.display = 'none'; // Esconde ao clicar
+    restartBtn.style.display = 'none';
     currentRound = 0; 
     wpmScores = [];
     shuffleSentences(); 
     getNextSentence();
 });
 
-// Listener do botão SALVAR (este já está correto)
+// Listener do botão SALVAR
 saveBtn.addEventListener('click', async () => {
     const playerName = playerNameInput.value.trim();
     const gameName = "typing_test";
@@ -221,12 +220,12 @@ saveBtn.addEventListener('click', async () => {
             leaderboardBtn.style.display = 'inline-block';
         } else {
             saveStatus.textContent = `Erro ao salvar: ${result.erro}`;
-            saveBtn.disabled = false; // Reabilita
+            saveBtn.disabled = false;
         }
     } catch (error) {
         console.error("Erro de rede ao salvar pontuação:", error);
         saveStatus.textContent = "Erro de conexão. Servidor está offline?";
-        saveBtn.disabled = false; // Reabilita
+        saveBtn.disabled = false;
     }
 });
 
@@ -235,5 +234,5 @@ currentRound = 0;
 wpmScores = [];
 shuffleSentences(); 
 getNextSentence();
-restartBtn.style.display = 'none'; // Esconde o botão
-restartBtn.textContent = "Jogar Novamente"; // Prepara o texto
+restartBtn.style.display = 'none';
+restartBtn.textContent = "Jogar Novamente";
